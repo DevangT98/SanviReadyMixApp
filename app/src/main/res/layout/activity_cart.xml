@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CartActivity">
+
+    <RelativeLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#000000"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Products"
+            android:id="@+id/productstv"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ready-Mix"
+            android:layout_below="@id/productstv"
+            android:id="@+id/readymixtv"
+            android:textColor="#ffffff"
+            android:textSize="12sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Flour"
+            android:layout_below="@id/readymixtv"
+            android:id="@+id/flourtv"
+            android:textColor="#ffffff"
+            android:textSize="12sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Upwas"
+            android:layout_below="@id/flourtv"
+            android:id="@+id/Upwastv"
+            android:textColor="#ffffff"
+            android:textSize="12sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chutney"
+            android:layout_below="@id/Upwastv"
+            android:id="@+id/Chutneytv"
+            android:textColor="#ffffff"
+            android:textSize="12sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Masale"
+            android:layout_below="@id/Chutneytv"
+            android:id="@+id/Masaletv"
+            android:textColor="#ffffff"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="My Account"
+            android:id="@+id/myacctv"
+            android:layout_toEndOf="@id/productstv"
+            android:textColor="#ffffff"
+            android:layout_marginLeft="30dp"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/myacctv"
+            android:layout_toEndOf="@id/productstv"
+            android:layout_marginLeft="30dp"
+            android:text="Cart"
+            android:id="@+id/carttv"
+            android:textColor="#ffffff"
+            android:textSize="12sp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/carttv"
+            android:layout_toEndOf="@id/productstv"
+            android:layout_marginLeft="30dp"
+            android:text="My Orders"
+            android:id="@+id/myorderstv"
+            android:textColor="#ffffff"
+            android:textSize="12sp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/myorderstv"
+            android:layout_toEndOf="@id/productstv"
+            android:layout_marginLeft="30dp"
+            android:text="Invoices"
+            android:id="@+id/invoicestv"
+            android:textColor="#ffffff"
+            android:textSize="12sp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Help"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:layout_toEndOf="@id/myacctv"
+            android:layout_marginLeft="30dp"
+            android:id="@+id/helptv"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Call: +91 9209470"
+            android:textColor="#ffffff"
+            android:layout_below="@id/helptv"
+            android:layout_toEndOf="@id/myacctv"
+            android:layout_marginLeft="30dp"
+            android:id="@+id/calltv"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email: help@sanvi.com"
+            android:textColor="#ffffff"
+            android:layout_below="@id/calltv"
+            android:layout_toEndOf="@id/myacctv"
+            android:layout_marginLeft="30dp"
+            android:id="@+id/emailtv"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Whatsapp: +91 9209470"
+            android:textColor="#ffffff"
+            android:layout_below="@id/emailtv"
+            android:layout_toEndOf="@id/myacctv"
+            android:layout_marginLeft="30dp"
+            android:id="@+id/whatsapptv"
+            />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/footer"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="My Cart"
+            android:textSize="30dp"
+            android:textColor="#000000"
+            android:layout_margin="10sp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:weightSum="4"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Item Desc."
+                android:textSize="20dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="#000000"
+                android:layout_weight="1"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Unit Price"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="20dp"
+                android:textColor="#000000"
+                android:layout_weight="1"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Quantity"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="20dp"
+                android:textColor="#000000"
+                android:layout_weight="1"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sub Total"
+                android:textSize="20dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="#000000"
+                android:layout_weight="1"
+                />
+        </LinearLayout>
+
+<androidx.recyclerview.widget.RecyclerView
+    android:layout_width="match_parent"
+    android:layout_height="400dp"
+    android:layout_marginTop="15dp"
+    android:id="@+id/recyclerView"
+    ></androidx.recyclerview.widget.RecyclerView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Total:"
+                android:textSize="20dp"
+                android:textColor="#000000"
+                android:textAlignment="viewEnd"
+                android:layout_marginRight="50dp"
+                android:layout_weight="0.25"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:layout_weight="1.75"
+                android:textSize="20dp"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item
+        android:id="@+id/searchBarMenu"
+        android:title="Search"
+        android:icon="@drawable/ic_search_black_24dp"
+        app:showAsAction="always"
+        android:iconTint="#ffffff"
+        app:actionViewClass="androidx.appcompat.widget.SearchView" />
+    <item
+        android:id="@+id/productsMenu"
+        android:title="Products"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/elpMenu"
+        android:title="Help"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/loginMenu"
+        android:title="Login"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/cartMenu"
+        android:title="Cart"
+        app:showAsAction="always" />
+
+
+</menu>
