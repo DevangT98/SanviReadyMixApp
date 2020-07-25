@@ -25,6 +25,7 @@ public class Adapter extends PagerAdapter {
     private List<Model> models;
     private LayoutInflater layoutInflater;
     private Context context;
+    private List<String> cartItemNames;
 
     public Adapter(List<Model> models, Context context) {
         this.models = models;
@@ -58,20 +59,24 @@ public class Adapter extends PagerAdapter {
         addToCartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String image = String.valueOf(models.get(position).getProductImage());
-                String name = models.get(position).getProductName();
-                String category = models.get(position).getProductCategory();
-                String price = models.get(position).getProductPrice();
-
-                ProductModel.getInstance(v.getContext());
                 ProductModel.open();
-                ProductModel.insert(image,name,category,price);
+                cartItemNames = ProductModel.cartItemNames();
                 ProductModel.close();
-                Toast.makeText(view.getContext(),"Added to Cart",Toast.LENGTH_SHORT).show();
+                if (!(cartItemNames.contains(models.get(position).getProductName()))) {
+                    String image = String.valueOf(models.get(position).getProductImage());
+                    String name = models.get(position).getProductName();
+                    String category = models.get(position).getProductCategory();
+                    String price = models.get(position).getProductPrice();
 
-                ProductModel.open();
-                ProductModel.showAll();
-                ProductModel.close();
+                    ProductModel.getInstance(v.getContext());
+                    ProductModel.open();
+                    ProductModel.insert(image, name, category, price, "1");
+                    ProductModel.close();
+                    Toast.makeText(view.getContext(), "Added to Cart", Toast.LENGTH_SHORT).show();
+
+                    ProductModel.open();
+                    ProductModel.showAll();
+                    ProductModel.close();
 //                Log.i("YAY", "*******************************");
 //                Log.i("YAY", "YOU CLICKED ME: " + image);
 //                Log.i("YAY", "YOU CLICKED ME: " + name);
@@ -85,6 +90,9 @@ public class Adapter extends PagerAdapter {
                 i.putExtra("productPrice", price);
                 i.putExtra("productCategory", category);
                 context.startActivity(i);*/
+            }else {
+                    Toast.makeText(v.getContext(),"Item Already in Cart!",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

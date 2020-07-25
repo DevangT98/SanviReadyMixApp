@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.dev.sanvireadymix.CartItems;
 import com.dev.sanvireadymix.Model;
 
 import java.security.Key;
@@ -37,8 +38,9 @@ public class ProductModel {
     public static void showAll() {
 
         String sql = "SELECT * FROM " + Keys.TB_NAME;
+        String cartsql = "SELECT * FROM " + Keys.CART_TABLE;
         Cursor cr = database.rawQuery(sql, null);
-
+        Cursor cr1 = database.rawQuery(cartsql, null);
         while (cr.moveToNext()) {
             Log.i("YAY", "P_ID => " + cr.getInt(cr.getColumnIndex(Keys.P_ID)));
             Log.i("YAY", "P_IMAGE => " + cr.getString(cr.getColumnIndex(Keys.P_IMAGE)));
@@ -49,35 +51,69 @@ public class ProductModel {
 
         }
 
+        while (cr1.moveToNext()) {
+            Log.i("YAY", "Product_ID => " + cr1.getInt(cr1.getColumnIndex(Keys.Product_ID)));
+            Log.i("YAY", "Product_IMAGE => " + cr1.getString(cr1.getColumnIndex(Keys.Product_IMAGE)));
+            Log.i("YAY", "Product_NAME => " + cr1.getString(cr1.getColumnIndex(Keys.Product_NAME)));
+            Log.i("YAY", "Product_PRICE=> " + cr1.getString(cr1.getColumnIndex(Keys.Product_PRICE)));
+            Log.i("YAY", "Product_TYPE => " + cr1.getString(cr1.getColumnIndex(Keys.Product_TYPE)));
+            Log.i("YAY", "Product_Qty => " + cr1.getString(cr1.getColumnIndex(Keys.Product_QUANTITY)));
+            Log.i("YAY", "*************************************************************************");
+
+        }
+
 
     }
 
-    public static void insert(String image, String name, String category, String price) {
+    public static void insert(String image, String name, String category, String price, String quantity) {
 
         ContentValues cv = new ContentValues();
-        cv.put(Keys.P_IMAGE, image);
-        cv.put(Keys.P_NAME, name);
-        cv.put(Keys.P_PRICE, price);
-        cv.put(Keys.P_TYPE, category);
-        database.insert(Keys.TB_NAME, null, cv);
+        cv.put(Keys.Product_IMAGE, image);
+        cv.put(Keys.Product_NAME, name);
+        cv.put(Keys.Product_PRICE, price);
+        cv.put(Keys.Product_TYPE, category);
+        cv.put(Keys.Product_QUANTITY, quantity);
+        database.insert(Keys.CART_TABLE, null, cv);
         Log.i("DEV", "Values inserted successfully");
     }
 
-    public static List<Model> getCartItems() {
-        List<Model> cartItems = new ArrayList<>();
-        String sql = "SELECT * FROM " + Keys.TB_NAME;
+    public static List<CartItems> getCartItems() {
+        List<CartItems> cartItems = new ArrayList<>();
+        String sql = "SELECT * FROM " + Keys.CART_TABLE;
         Cursor cr = database.rawQuery(sql, null);
-        String  name, price, category;
-        int image;
+        String name, price, category, quantity;
+        int image,id;
         while (cr.moveToNext()) {
-            image = Integer.parseInt(cr.getString(cr.getColumnIndex(Keys.P_IMAGE)));
-            name = cr.getString(cr.getColumnIndex(Keys.P_NAME));
-            price = cr.getString(cr.getColumnIndex(Keys.P_PRICE));
-            category = cr.getString(cr.getColumnIndex(Keys.P_TYPE));
-
-            cartItems.add(new Model(image, name, price, category));
+            id = Integer.parseInt(cr.getString(cr.getColumnIndex(Keys.Product_ID)));
+            image = Integer.parseInt(cr.getString(cr.getColumnIndex(Keys.Product_IMAGE)));
+            name = cr.getString(cr.getColumnIndex(Keys.Product_NAME));
+            price = cr.getString(cr.getColumnIndex(Keys.Product_PRICE));
+            category = cr.getString(cr.getColumnIndex(Keys.Product_TYPE));
+            quantity = cr.getString(cr.getColumnIndex(Keys.Product_QUANTITY));
+            cartItems.add(new CartItems(id,image, name, category, price, quantity));
         }
         return cartItems;
 
+    }
+
+    public static  List<String> cartItemNames(){
+        List<String> cartItemName = new ArrayList<>();
+        String sql = "SELECT "+Keys.Product_NAME+ " FROM "+Keys.CART_TABLE;
+        Cursor cr = database.rawQuery(sql, null);
+        String name;
+        while (cr.moveToNext()){
+            name = cr.getString(cr.getColumnIndex(Keys.Product_NAME));
+            Log.i("HELLO","PRODUCT NAME : "+ name);
+            cartItemName.add(name);
+        }
+        return  cartItemName;
+
+    }
+
+    public static void deleteItem(int productId) {
+
+        String sql = "DELETE FROM " + Keys.CART_TABLE + " WHERE " + Keys.Product_ID+ "=" + productId;
+        database.execSQL(sql);
+        Log.i("YAY","ITEM REMOVED: "+productId);
     }
 }

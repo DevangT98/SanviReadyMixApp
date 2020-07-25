@@ -1,10 +1,12 @@
 package com.dev.sanvireadymix;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,12 +20,13 @@ import java.util.List;
 
 public class BillItemsAdapter extends RecyclerView.Adapter<BillItemsAdapter.ViewHolder> {
 
-    List<Model> cartItems;
+    List<CartItems> cartItems;
     Context context;
-    int counter;
+    //    int counter;
     private int qty = 1;
+    int total = 0;
 
-    public BillItemsAdapter(List<Model> cartItems, Context context) {
+    public BillItemsAdapter(List<CartItems> cartItems, Context context) {
         this.cartItems = cartItems;
         this.context = context;
     }
@@ -36,24 +39,27 @@ public class BillItemsAdapter extends RecyclerView.Adapter<BillItemsAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
         ProductModel.open();
         cartItems = ProductModel.getCartItems();
-        final Model model = cartItems.get(position);
+        final CartItems model = cartItems.get(position);
         holder.productImage.setImageResource(model.getProductImage());
         holder.productName.setText(model.getProductName());
         holder.productPrice.setText(model.getProductPrice());
-
+        holder.productQty.setText(model.getProductQty());
+        holder.subTotal.setText("0");
+//        counter = Integer.parseInt(model.getProductQty());
         holder.addItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int addCounter = Integer.parseInt(holder.productQty.getText().toString().trim());
                 holder.removeItem.setClickable(true);
-                counter++;
-                holder.productQty.setText(String.valueOf(counter));
-                Log.i("YAY", "QTY INCREASED: " + String.valueOf(counter));
+                addCounter++;
+                holder.productQty.setText(String.valueOf(addCounter));
+                Log.i("YAY", "QTY INCREASED: " + String.valueOf(addCounter));
 
-                if (counter > 9) {
+                if (addCounter > 9) {
                     holder.productQty.setText("10");
                     Toast.makeText(v.getContext(), "Max Quantity Reached", Toast.LENGTH_SHORT).show();
                     holder.addItem.setClickable(false);
@@ -61,22 +67,24 @@ public class BillItemsAdapter extends RecyclerView.Adapter<BillItemsAdapter.View
                 } else {
                     holder.addItem.setClickable(true);
                 }
-                qty = counter;
+                qty = addCounter;
                 holder.subTotal.setText(String.valueOf(Integer.parseInt(model.getProductPrice()) * qty));
-
+                total = total + Integer.parseInt(holder.subTotal.getText().toString().trim());
+                Log.i("YAY", "TOTAL PRICE: " + String.valueOf(total));
             }
         });
 
         holder.removeItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int subCounter = Integer.parseInt(holder.productQty.getText().toString().trim());
                 holder.addItem.setClickable(true);
-                counter--;
-                holder.productQty.setText(String.valueOf(counter));
-                Log.i("YAY", "QTY DECREASED: " + String.valueOf(counter));
-                if (counter <= 1) {
+                subCounter--;
+                holder.productQty.setText(String.valueOf(subCounter));
+                Log.i("YAY", "QTY DECREASED: " + String.valueOf(subCounter));
+                if (subCounter <= 1) {
                     holder.productQty.setText("1");
-                    counter = 1;
+                    subCounter = 1;
                     holder.removeItem.setClickable(false);
                     Toast.makeText(v.getContext(), "Min Quantity Reached", Toast.LENGTH_SHORT).show();
 
@@ -84,8 +92,23 @@ public class BillItemsAdapter extends RecyclerView.Adapter<BillItemsAdapter.View
                     holder.removeItem.setClickable(true);
                 }
 
-                qty = counter;
+                qty = subCounter;
                 holder.subTotal.setText(String.valueOf(Integer.parseInt(model.getProductPrice()) * qty));
+                total = total - Integer.parseInt(holder.subTotal.getText().toString().trim());
+                Log.i("YAY", "TOTAL PRICE: " + String.valueOf(total));
+            }
+        });
+
+        holder.removeFromCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                ProductModel.open();
+                ProductModel.deleteItem(cartItems.get(position).getProductId());
+                ProductModel.close();
+                cartItems.remove(cartItems.get(position));
+                notifyItemRemoved(position);
             }
         });
 
@@ -101,7 +124,8 @@ public class BillItemsAdapter extends RecyclerView.Adapter<BillItemsAdapter.View
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView productName, productPrice, productQty, subTotal;
-        public ImageView productImage, addItem, removeItem;
+        public ImageView productImage, addItem, removeItem, removeFromCart;
+        Button checkOutButton, continueShoppingButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -113,7 +137,9 @@ public class BillItemsAdapter extends RecyclerView.Adapter<BillItemsAdapter.View
             productImage = itemView.findViewById(R.id.productImage);
             addItem = itemView.findViewById(R.id.btnAddItem);
             removeItem = itemView.findViewById(R.id.btnRemoveItem);
-
+            removeFromCart = itemView.findViewById(R.id.btnRemoveFromCart);
+            checkOutButton = itemView.findViewById(R.id.checkOutButton);
+            continueShoppingButton = itemView.findViewById(R.id.continueShoppingButton);
         }
     }
 }

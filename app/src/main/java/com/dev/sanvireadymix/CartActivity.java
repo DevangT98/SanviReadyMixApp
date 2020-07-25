@@ -1,7 +1,9 @@
 package com.dev.sanvireadymix;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,9 +15,10 @@ import java.util.List;
 
 public class CartActivity extends AppCompatActivity {
 
-//  private List<Model> cartItems;
+    //  private List<Model> cartItems;
     RecyclerView recyclerView;
     BillItemsAdapter billItemsAdapter;
+    TextView totalBill;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,18 +27,15 @@ public class CartActivity extends AppCompatActivity {
 
         ProductModel.getInstance(getApplicationContext());
         ProductModel.open();
-        final List<Model> cartItems = ProductModel.getCartItems();
-        Log.i("YAY","CART SIZE: "+cartItems.size());
+        final List<CartItems> cartItems = ProductModel.getCartItems();
+        Log.i("YAY", "CART SIZE: " + cartItems.size());
         ProductModel.close();
-
+        totalBill = findViewById(R.id.totalBill);
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new  LinearLayoutManager(getApplicationContext()));
-        billItemsAdapter = new BillItemsAdapter(cartItems,getApplicationContext());
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        billItemsAdapter = new BillItemsAdapter(cartItems, getApplicationContext());
         recyclerView.setAdapter(billItemsAdapter);
-
-
-
 
 
 
