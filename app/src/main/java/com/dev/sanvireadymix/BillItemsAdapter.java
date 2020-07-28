@@ -2,6 +2,7 @@ package com.dev.sanvireadymix;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,8 @@ public class BillItemsAdapter extends RecyclerView.Adapter<BillItemsAdapter.View
     //    int counter;
     private int qty = 1;
     int total = 0;
+    SharedPreferences sp;
+    SharedPreferences.Editor editor;
 
     public BillItemsAdapter(List<CartItems> cartItems, Context context) {
         this.cartItems = cartItems;
@@ -40,7 +43,8 @@ public class BillItemsAdapter extends RecyclerView.Adapter<BillItemsAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-
+        sp = this.context.getApplicationContext().getSharedPreferences("MY_APP",Context.MODE_PRIVATE);
+        editor = sp.edit();
         ProductModel.open();
         cartItems = ProductModel.getCartItems();
         final CartItems model = cartItems.get(position);
@@ -48,7 +52,9 @@ public class BillItemsAdapter extends RecyclerView.Adapter<BillItemsAdapter.View
         holder.productName.setText(model.getProductName());
         holder.productPrice.setText(model.getProductPrice());
         holder.productQty.setText(model.getProductQty());
-        holder.subTotal.setText("0");
+        holder.subTotal.setText(model.getProductPrice());
+        total = total + Integer.parseInt(holder.subTotal.getText().toString().trim());
+        Log.i("HELLO","TOTAL TEST: " +total);
 //        counter = Integer.parseInt(model.getProductQty());
         holder.addItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +63,10 @@ public class BillItemsAdapter extends RecyclerView.Adapter<BillItemsAdapter.View
                 holder.removeItem.setClickable(true);
                 addCounter++;
                 holder.productQty.setText(String.valueOf(addCounter));
+                ProductModel.open();
+                int id = model.getProductId();
+                ProductModel.updateQuantity(addCounter,id);
+                ProductModel.close();
                 Log.i("YAY", "QTY INCREASED: " + String.valueOf(addCounter));
 
                 if (addCounter > 9) {
@@ -67,12 +77,15 @@ public class BillItemsAdapter extends RecyclerView.Adapter<BillItemsAdapter.View
                 } else {
                     holder.addItem.setClickable(true);
                 }
-                qty = addCounter;
+                qty = Integer.parseInt(holder.productQty.getText().toString().trim());
                 holder.subTotal.setText(String.valueOf(Integer.parseInt(model.getProductPrice()) * qty));
-                total = total + Integer.parseInt(holder.subTotal.getText().toString().trim());
+                total = total + Integer.parseInt(holder.productPrice.getText().toString().trim());
+//                editor.putString("total",String.valueOf(total));
+//                editor.commit();
                 Log.i("YAY", "TOTAL PRICE: " + String.valueOf(total));
             }
         });
+
 
         holder.removeItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +95,10 @@ public class BillItemsAdapter extends RecyclerView.Adapter<BillItemsAdapter.View
                 subCounter--;
                 holder.productQty.setText(String.valueOf(subCounter));
                 Log.i("YAY", "QTY DECREASED: " + String.valueOf(subCounter));
+                ProductModel.open();
+                int id = model.getProductId();
+                ProductModel.updateQuantity(subCounter,id);
+                ProductModel.close();
                 if (subCounter <= 1) {
                     holder.productQty.setText("1");
                     subCounter = 1;
@@ -92,9 +109,11 @@ public class BillItemsAdapter extends RecyclerView.Adapter<BillItemsAdapter.View
                     holder.removeItem.setClickable(true);
                 }
 
-                qty = subCounter;
+                qty = Integer.parseInt(holder.productQty.getText().toString().trim());
                 holder.subTotal.setText(String.valueOf(Integer.parseInt(model.getProductPrice()) * qty));
-                total = total - Integer.parseInt(holder.subTotal.getText().toString().trim());
+                total = total - Integer.parseInt(holder.productPrice.getText().toString().trim());
+//                editor.putString("total",String.valueOf(total));
+//                editor.commit();
                 Log.i("YAY", "TOTAL PRICE: " + String.valueOf(total));
             }
         });
@@ -113,8 +132,11 @@ public class BillItemsAdapter extends RecyclerView.Adapter<BillItemsAdapter.View
         });
 
 
+
         ProductModel.close();
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -125,7 +147,6 @@ public class BillItemsAdapter extends RecyclerView.Adapter<BillItemsAdapter.View
 
         public TextView productName, productPrice, productQty, subTotal;
         public ImageView productImage, addItem, removeItem, removeFromCart;
-        Button checkOutButton, continueShoppingButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -138,8 +159,7 @@ public class BillItemsAdapter extends RecyclerView.Adapter<BillItemsAdapter.View
             addItem = itemView.findViewById(R.id.btnAddItem);
             removeItem = itemView.findViewById(R.id.btnRemoveItem);
             removeFromCart = itemView.findViewById(R.id.btnRemoveFromCart);
-            checkOutButton = itemView.findViewById(R.id.checkOutButton);
-            continueShoppingButton = itemView.findViewById(R.id.continueShoppingButton);
+
         }
     }
 }

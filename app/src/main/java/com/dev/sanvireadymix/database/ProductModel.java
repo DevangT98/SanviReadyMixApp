@@ -116,4 +116,12 @@ public class ProductModel {
         database.execSQL(sql);
         Log.i("YAY","ITEM REMOVED: "+productId);
     }
+
+    public static void updateQuantity(int addCounter, int id) {
+
+        String sql = "UPDATE "+Keys.CART_TABLE + " SET "+ Keys.Product_QUANTITY+ "="+String.valueOf(addCounter) +" WHERE " + Keys.Product_ID +"="+String.valueOf(id);
+        database.execSQL(sql);
+        Log.i("HELLO","UPDATED SUCCESSFULLY");
+
+    }
 }

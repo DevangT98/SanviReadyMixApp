@@ -59,6 +59,7 @@ public class Adapter extends PagerAdapter {
         addToCartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ProductModel.getInstance(v.getContext());
                 ProductModel.open();
                 cartItemNames = ProductModel.cartItemNames();
                 ProductModel.close();
